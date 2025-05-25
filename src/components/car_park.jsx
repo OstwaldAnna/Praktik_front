@@ -1,46 +1,18 @@
 import React from 'react'
 import Container from './container'
 import CardCustom from './custom/card_custom'
+import { useEffect, useState } from 'react'
+import { fetchCars } from '../Api'
 
 const Car_park = () => {
-    const cars = [
-        {
-            name: 'Toyota Camry',
-            engine: '2.5L',
-            year: '2022',
-            drive: 'Передний',
-            transmission: 'Автомат',
-            price: '4 000',
-            image: 'https://image.winudf.com/v2/image/bW9iaS5hbmRyb2FwcC5wcm9zcGVyaXR5YXBwcy5jNTExMV9zY3JlZW5fN18xNTI0MDQxMDUwXzAyMQ/screen-7.jpg?fakeurl=1&type=.jpg',
-        },
-        // {
-        //     name: 'BMW X5',
-        //     engine: '3.0L',
-        //     year: '2021',
-        //     drive: 'Полный',
-        //     transmission: 'Автомат',
-        //     price: '7 000',
-        //     image: 'https://via.placeholder.com/300x200?text=X5',
-        // },
-        // {
-        //     name: 'Kia Rio',
-        //     engine: '1.6L',
-        //     year: '2023',
-        //     drive: 'Передний',
-        //     transmission: 'Механика',
-        //     price: '2 500',
-        //     image: 'https://via.placeholder.com/300x200?text=Rio',
-        // },
-        // {
-        //     name: 'Hyundai Sonata',
-        //     engine: '2.0L',
-        //     year: '2020',
-        //     drive: 'Передний',
-        //     transmission: 'Автомат',
-        //     price: '3 500',
-        //     image: 'https://via.placeholder.com/300x200?text=Sonata',
-        // },
-    ];
+
+    const [cars, setCars] = useState([]);
+    
+    useEffect(() => {
+        fetchCars()
+          .then(data => setCars(data))
+          .catch(err => console.error('Ошибка загрузки машин:', err));
+      }, []);
 
     return (
         <div className="bg-accent">
@@ -50,8 +22,8 @@ const Car_park = () => {
                 {/* Горизонтальная прокрутка на мобилке, сетка на больших экранах */}
                 <div className="mt-10 overflow-x-auto sm:overflow-visible">
                     <div className="flex gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-4 min-w-[600px] sm:min-w-0">
-                        {cars.map((car, index) => (
-                            <CardCustom key={index} car={car} />
+                        {cars.slice(0,8).map((car) => (
+                            <CardCustom id={car.id} title={car.name} image={car.url_image} price={`${car.price.toLocaleString()} `} />
                         ))}
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 import React from 'react'
 import Container from './container'
-
+import { useEffect, useState } from 'react'
+import { fetchCars } from '../Api'
 import {
   Carousel,
   CarouselContent,
@@ -10,16 +11,16 @@ import {
 } from "@/components/ui/carousel"
 import CardCustom from './custom/card_custom'
 
-const cars = [
-  { id: 1, title: 'Toyota Camry', image: '/images/camry.jpg', price: '2 500 000 ₽' },
-  { id: 2, title: 'Kia K5', image: '/images/k5.jpg', price: '2 200 000 ₽' },
-  { id: 3, title: 'Hyundai Sonata', image: '/images/sonata.jpg', price: '2 300 000 ₽' },
-  { id: 3, title: 'Hyundai Sonata', image: '/images/sonata.jpg', price: '2 300 000 ₽' },
-  { id: 3, title: 'Hyundai Sonata', image: '/images/sonata.jpg', price: '2 300 000 ₽' },
-  // другие авто
-];
-
 const New_auto = () => {
+
+  const [cars, setCars] = useState([]);
+
+  useEffect(() => {
+    fetchCars()
+      .then(data => setCars(data))
+      .catch(err => console.error('Ошибка загрузки машин:', err));
+  }, []);
+
   return (
     <div className="bg-accent">
       <Container className="py-10 px-4 sm:px-6 md:px-12">
@@ -30,7 +31,9 @@ const New_auto = () => {
               {cars.map((car) => (
                 <CarouselItem key={car.id} className="basis-full sm:basis-1/2 lg:basis-1/3">
                   <div className="p-2">
-                    <CardCustom title={car.title} image={car.image} price={car.price} />
+                    {/*  id, title, image, price, engine, year, drive, transmission  */}
+                    <CardCustom id={car.id} title={car.name} image={car.url_image} price={`${car.price.toLocaleString()} `} engine={car.engine.name}
+                    year={car.year} drive={car.drive.name} transmission={car.transmission.name} />
                   </div>
                 </CarouselItem>
               ))}

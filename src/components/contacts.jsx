@@ -1,17 +1,31 @@
-import React from 'react'
-import Container from './container';
-
+import React, { useEffect, useState } from "react";
+import Container from "./container";
+import { fetchContacts } from "../Api";
 
 const Contacts = () => {
+  const [contacts, setContacts] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchContacts()
+      .then(setContacts)
+      .catch((err) => {
+        console.error(err);
+        setError("Ошибка при загрузке контактов");
+      });
+  }, []);
+
   return (
     <Container className="flex flex-col gap-10 md:flex-row justify-between py-12 px-4 md:px-28 md:py-24">
       <div className="md:w-1/2">
-        <h1 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6">Контакты</h1>
+        <h1 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6">
+          Контакты
+        </h1>
         <div className="text-base flex flex-col gap-2">
           <p>ООО “KeyToDrive” Севастопольский проспект 5А</p>
-          <p>Телефон:</p>
-          <p>Почта</p>
-          <p>ВК</p>
+          <p>Телефон: {contacts?.tel || "—"}</p>
+          <p>Почта: {contacts?.mail || "—"}</p>
+          <p>ВК: {contacts?.vk || "—"}</p>
         </div>
       </div>
       <div className="w-full md:w-[670px] h-[300px] md:h-[474px]">
@@ -24,8 +38,7 @@ const Contacts = () => {
         ></iframe>
       </div>
     </Container>
+  );
+};
 
-  )
-}
-
-export default Contacts
+export default Contacts;

@@ -39,9 +39,9 @@ function App() {
         <Route path='/auto' element={<CarPage />} />
         <Route path='*' element={<NotFound />} />
         <Route path='/productcar' element={<ProductCarPage />} />
+        <Route path='/productcar/:id' element={<ProductCarPage />} />
         <Route path='/auth' element={<AuthPage />} />
         <Route path='/registr' element={<RegistrPage />} />
-        /auth
       </Routes>
     </>
   )
